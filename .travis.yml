@@ -1,0 +1,11 @@
+sudo: required  
+services:  
+  - docker
+install:  
+  - echo "$DOCKER_HUB_PASSWORD" | docker login --email=$DOCKER_HUB_EMAIL --username=$DOCKER_HUB_USERNAME --password-stdin
+  - wget https://github.com/jw3/particle-builder/archive/%VERSION%.tar.gz -O - | tar -xz -C ../ --strip-components 1
+script:  
+  - ../scripts/ci
+after_success: ../scripts/push-image
+env:  
+  - DOCKER_IMAGE_NAME=jwiii/particle-builder
